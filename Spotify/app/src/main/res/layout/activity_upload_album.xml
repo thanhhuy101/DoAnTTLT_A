@@ -1,69 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ECE4E4"
     android:orientation="vertical"
-    android:padding="10dp"
-    tools:context=".MainActivity">
+    android:padding="16dp"
+    tools:context=".Model.UploadAlbumActivity">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ffffff">
+        android:background="#ffffff"
+        android:orientation="horizontal"
+        android:id="@+id/linearlayout">
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Choose"
-
             android:id="@+id/buttonChoose"/>
 
         <EditText
 
+            android:id="@+id/edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:gravity="center"
-            android:hint="Enter a name of album"
-            android:id="@+id/edit_text"/>
+            android:layout_weight="4"
+            android:hint="Enter a name of album" />
 
     </LinearLayout>
-
-    <ProgressBar
-        android:id="@+id/progressbar"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp" />
+        android:background="#ffffff"
+        android:id="@+id/linear"
+        android:layout_below="@id/linearlayout"
+        android:orientation="vertical"
+        android:weightSum="2">
 
-    <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Choose Category"
+            android:textColor="@color/purple_200"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+            android:textSize="16sp"
+            android:layout_marginBottom="5dp"/>
 
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            />
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:id="@+id/imageview"
+            android:layout_marginTop="20dp">
+        </ImageView>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:orientation="vertical">
-
-        <EditText
+        <Button
+            android:id="@+id/buttonUpload"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:text="Upload">
 
-            />
-
+        </Button>
     </LinearLayout>
 
-    <Button
-        android:id="@+id/buttonUpload"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="openAlbumUploadActivity"
-        android:text="UPLOAD" />
-</LinearLayout>
+</RelativeLayout>

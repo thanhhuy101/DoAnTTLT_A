@@ -36,7 +36,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UpLoadAlbumActivity extends AppCompatActivity implements View.OnClickListener {
+public class UploadAlbumActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button buttonChoose;
     private Button buttonUpload;
@@ -68,11 +68,11 @@ public class UpLoadAlbumActivity extends AppCompatActivity implements View.OnCli
 
 
         List<String> categories = new ArrayList<>();
-        categories.add("Love Song");
-        categories.add("Sad Song");
-        categories.add("Party Song");
-        categories.add("Birthday Song");
-        categories.add("God Song");
+        categories.add("Love Songs");
+        categories.add("Sad Songs");
+        categories.add("Party Songs");
+        categories.add("Birthday Songs");
+        categories.add("God Songs");
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,categories);
 
@@ -83,7 +83,7 @@ public class UpLoadAlbumActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 songsCategory = adapterView.getItemAtPosition(i).toString();
-                Toast.makeText(UpLoadAlbumActivity.this,"Selected :" +songsCategory, Toast.LENGTH_SHORT).show();
+                Toast.makeText(UploadAlbumActivity.this,"Selected :" +songsCategory, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -114,15 +114,15 @@ public class UpLoadAlbumActivity extends AppCompatActivity implements View.OnCli
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-
                     sRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
                             String url = uri.toString();
                             Upload upload = new Upload(edittextName.getText().toString().trim(),url, songsCategory);
                             String uploadId = mDatabase.push().getKey();
+                            mDatabase.child(uploadId).setValue(upload);
                             progressDialog.dismiss();
-                            Toast.makeText(UpLoadAlbumActivity.this, "File Uploaded", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(UploadAlbumActivity.this, "File Uploaded", Toast.LENGTH_SHORT).show();
 
                         }
                     });
@@ -132,7 +132,7 @@ public class UpLoadAlbumActivity extends AppCompatActivity implements View.OnCli
                 public void onFailure(@NonNull Exception e) {
 
                     progressDialog.dismiss();
-                    Toast.makeText(UpLoadAlbumActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(UploadAlbumActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -158,7 +158,7 @@ public class UpLoadAlbumActivity extends AppCompatActivity implements View.OnCli
 
         if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null){
             filePath =  data.getData();
-            Bitmap bitmap = null;
+            Bitmap bitmap;
             try{
                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                imageView.setImageBitmap(bitmap);
@@ -173,4 +173,6 @@ public class UpLoadAlbumActivity extends AppCompatActivity implements View.OnCli
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getMimeTypeFromExtension(cr.getType(uri));
     }
+
+
 }
