@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     Uri audioUri;
     StorageReference mStorageref;
     StorageTask mUploadsTask;
-    DatabaseReference referenceSongs;
+    private DatabaseReference referenceSongs;
     String songsCategory;
     MediaMetadataRetriever metadataRetriever;
     byte [] art;
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         album_art = findViewById(R.id.imageview);
 
         metadataRetriever = new MediaMetadataRetriever();
-        referenceSongs = FirebaseDatabase.getInstance().getReference().child("songs");
+        referenceSongs = FirebaseDatabase.getInstance().getReference();
         mStorageref = FirebaseStorage.getInstance().getReference().child("songs");
 
 
@@ -125,20 +125,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             audioUri = data.getData();
             String fileNames = getFileName(audioUri);
             textViewImage.setText(fileNames);
-//            metadataRetriever.setDataSource(this,audioUri);
-//
-//            art = metadataRetriever.getEmbeddedPicture();
-//            Bitmap bitmap = BitmapFactory.decodeByteArray(art,0,art.length);
-//            album_art.setImageBitmap(bitmap);
-//            album.setText(metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM));
-//            artist.setText(metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST));
-//            dataa.setText(metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_GENRE));
-//            durations.setText(metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
-//            title.setText(metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE));
-//
-//            artist1 = metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
-//            title1 = metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
-//            durations1 = metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+            metadataRetriever.setDataSource(this,audioUri);
+
+            art = metadataRetriever.getEmbeddedPicture();
+            Bitmap bitmap = BitmapFactory.decodeByteArray(art,0,art.length);
+            album_art.setImageBitmap(bitmap);
+            album.setText(metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM));
+            artist.setText(metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST));
+            dataa.setText(metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_GENRE));
+            durations.setText(metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
+            title.setText(metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE));
+
+            artist1 = metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
+            title1 = metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
+            durations1 = metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
 
         }
 
@@ -198,8 +198,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         public void onSuccess(Uri uri) {
 
                             UploadSong uploadSong = new UploadSong(songsCategory,title1,artist1,album_art1,durations1,uri.toString());
-                            String uploadId = referenceSongs.push().getKey();
-                            referenceSongs.child(uploadId).setValue(uploadSong);
+                            String uploadId = referenceSongs.child("songs").push().getKey();
+                            referenceSongs.child("songs").child(uploadId).setValue(uploadSong);
                         }
                     });
                 }
