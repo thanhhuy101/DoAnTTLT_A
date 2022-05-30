@@ -46,8 +46,9 @@ public class UploadAlbumActivity extends AppCompatActivity implements View.OnCli
     private static final int  PICK_IMAGE_REQUEST = 234;
 
     private Uri filePath;
-    StorageReference storageReference;
-    DatabaseReference mDatabase;
+    private StorageReference storageReference;
+    private DatabaseReference mDatabase;
+    private FirebaseDatabase database = FirebaseDatabase.getInstance("https://spotify-39443-default-rtdb.asia-southeast1.firebasedatabase.app/");
 
     @Override
     protected void onCreate(Bundle saveInstanceState){
@@ -59,8 +60,9 @@ public class UploadAlbumActivity extends AppCompatActivity implements View.OnCli
         edittextName = findViewById(R.id.edit_text);
         imageView = findViewById(R.id.imageview);
 
+
         storageReference = FirebaseStorage.getInstance().getReference();
-        mDatabase = FirebaseDatabase.getInstance().getReference(Constants.DATABASE_PATH_UPLOADS);
+        mDatabase = database.getReference(Constants.DATABASE_PATH_UPLOADS);
         Spinner spinner = findViewById(R.id.spinner);
 
         buttonChoose.setOnClickListener(this);

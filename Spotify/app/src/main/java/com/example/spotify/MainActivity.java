@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     Uri audioUri;
     StorageReference mStorageref;
     StorageTask mUploadsTask;
+    private FirebaseDatabase database = FirebaseDatabase.getInstance("https://spotify-39443-default-rtdb.asia-southeast1.firebasedatabase.app/");
     private DatabaseReference referenceSongs;
     String songsCategory;
     MediaMetadataRetriever metadataRetriever;
@@ -74,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         album_art = findViewById(R.id.imageview);
 
         metadataRetriever = new MediaMetadataRetriever();
-        referenceSongs = FirebaseDatabase.getInstance().getReference();
+        referenceSongs = database.getReference().child("songs");
         mStorageref = FirebaseStorage.getInstance().getReference().child("songs");
 
 
@@ -130,6 +131,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             art = metadataRetriever.getEmbeddedPicture();
             Bitmap bitmap = BitmapFactory.decodeByteArray(art,0,art.length);
             album_art.setImageBitmap(bitmap);
+
             album.setText(metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM));
             artist.setText(metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST));
             dataa.setText(metadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_GENRE));
@@ -198,8 +200,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         public void onSuccess(Uri uri) {
 
                             UploadSong uploadSong = new UploadSong(songsCategory,title1,artist1,album_art1,durations1,uri.toString());
-                            String uploadId = referenceSongs.child("songs").push().getKey();
-                            referenceSongs.child("songs").child(uploadId).setValue(uploadSong);
+                            String uploadId = referenceSongs.push().getKey();
+                            referenceSongs.child(uploadId).setValue(uploadSong);
                         }
                     });
                 }
